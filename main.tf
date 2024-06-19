@@ -32,7 +32,7 @@ resource "aws_subnet" "private_subnet" {
 }
 
 resource "aws_internet_gateway" "this_vpc_igw" {
-  count = var.subnet_type == "public" || var.subnet_type == "both" ? 1 : 0
+  count  = var.subnet_type == "public" || var.subnet_type == "both" ? 1 : 0
   vpc_id = aws_vpc.this_vpc.id
 
   tags = {
@@ -41,8 +41,8 @@ resource "aws_internet_gateway" "this_vpc_igw" {
 }
 
 resource "aws_nat_gateway" "this_nat_gateway" {
-  count        = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
-  allocation_id = aws_eip.this_eip.id
+  count         = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
+  allocation_id = aws_eip.this_eip[count.index].id
   subnet_id     = element(aws_subnet.public_subnet.*.id, 0)
 
   tags = {
@@ -51,7 +51,7 @@ resource "aws_nat_gateway" "this_nat_gateway" {
 }
 
 resource "aws_eip" "this_eip" {
-  count = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
+  count  = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
   domain = "vpc"
 
   tags = {
@@ -59,13 +59,14 @@ resource "aws_eip" "this_eip" {
   }
 }
 
+
 resource "aws_route_table" "public_route_table" {
-  count = var.subnet_type == "public" || var.subnet_type == "both" ? 1 : 0
+  count  = var.subnet_type == "public" || var.subnet_type == "both" ? 1 : 0
   vpc_id = aws_vpc.this_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.this_vpc_igw.id
+    gateway_id = aws_internet_gateway.this_vpc_igw[count.index].id
   }
 
   tags = {
@@ -80,7 +81,7 @@ resource "aws_route_table_association" "public_route_table_association" {
 }
 
 resource "aws_route_table" "private_route_table" {
-  count = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
+  count  = var.subnet_type == "private" || var.subnet_type == "both" ? 1 : 0
   vpc_id = aws_vpc.this_vpc.id
 
   route {
