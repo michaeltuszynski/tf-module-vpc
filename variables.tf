@@ -15,12 +15,8 @@ variable "private_subnet_cidrs" {
   default     = []
 }
 
-variable "subnet_type" {
-  description = "Type of subnets to create: public, private, or both"
+variable "project_name" {
+  description = "Name of the project"
   type        = string
-  default     = "both"
-  validation {
-    condition     = contains(["public", "private", "both"], var.subnet_type)
-    error_message = "subnet_type must be one of 'public', 'private', or 'both'"
-  }
+  default     = "app-vpc"
 }
