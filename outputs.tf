@@ -15,5 +15,5 @@ output "private_subnet_ids" {
 
 output "nat_gateway_id" {
   description = "The IDs of the private subnets"
-  value       = var.subnet_type == "private" || var.subnet_type == "both" ? aws_subnet.this_nat_gateway[0].id : []
+  value       = var.subnet_type == "private" || var.subnet_type == "both" ? aws_subnet.this_nat_gateway.id : []
 }
