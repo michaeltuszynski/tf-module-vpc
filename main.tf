@@ -1,5 +1,7 @@
 # Data source to get available availability zones
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
 resource "aws_vpc" "this_vpc" {
   provider             = aws.default
