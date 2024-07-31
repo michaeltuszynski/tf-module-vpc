@@ -17,3 +17,8 @@ output "private_subnet_ids" {
   description = "The IDs of the private subnets"
   value       = length(aws_subnet.private_subnet) > 0 ? aws_subnet.private_subnet[*].id : []
 }
+
+output "private_route_table_ids" {
+  description = "The IDs of the private route tables"
+  value       = length(aws_route_table.private_route_table) > 0 ? aws_route_table.private_route_table[*].id : []
+}
