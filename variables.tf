@@ -20,3 +20,9 @@ variable "project_name" {
   type        = string
   default     = "app-vpc"
 }
+
+variable "tags" {
+  description = "A map of tags to apply to the resources."
+  type        = map(string)
+  default     = {}
+}
